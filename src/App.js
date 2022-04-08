@@ -5,6 +5,7 @@ import { PrivateRoute } from "./routes/private-route"
 import { AuthProvider } from "./context/AuthContext"
 import Home from "./pages/Home"
 import Login from "./pages/login"
+import { LoginRoute } from "./routes/login-route"
 
 const theme = createTheme({
   palette: {
@@ -24,7 +25,9 @@ const App = () => (
           <Route exact path="/" element={<PrivateRoute />}>
             <Route exact path="/" element={<Home />} />
           </Route>
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<LoginRoute />}>
+            <Route exact path="/login" element={<Login />} />
+          </Route>
         </Routes>
       </Router>
     </AuthProvider>

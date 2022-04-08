@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useContext } from "react"
-import { Box, Button } from "@mui/material"
+import { Box, Button, CircularProgress } from "@mui/material"
 import { makeStyles } from "@mui/styles"
 import { useDevices } from "../hooks/use-devices"
+import { useNotify } from "../hooks/use-notify"
 import Device from "../components/Device"
 import { AuthContext } from "../context/AuthContext"
 
@@ -58,8 +59,9 @@ const useStyles = makeStyles({
 })
 
 const Home = () => {
-  const { setIsLoggedIn, setToken } = useContext(AuthContext)
+  const { setIsLoggedIn, setToken, token } = useContext(AuthContext)
   const { loading, error, devices } = useDevices()
+  const { loading: notifyLoading, error: notifyError, notifyComplete } = useNotify()
   const [width, setWidth] = useState(28)
 
   const [deviceWidth, setDeviceWidth] = useState(null)
@@ -93,6 +95,10 @@ const Home = () => {
     setToken(null)
   }
 
+  const onClickNotify = () => {
+    notifyComplete(token)
+  }
+
   return (
     <div className={classes.wrapper}>
       <div className={classes.container}>
@@ -113,8 +119,13 @@ const Home = () => {
           ))}
       </div>
       <Box justifyContent="center" component="span" className={classes.box}>
-        <Button className={classes.btnNotify} variant="contained">
+        <Button
+          className={classes.btnNotify}
+          onClick={onClickNotify}
+          variant="contained"
+        >
           Notify
+          {notifyLoading && <CircularProgress size={24} />}
         </Button>
         <Button variant="contained" onClick={onClickLogout}>
           Logout

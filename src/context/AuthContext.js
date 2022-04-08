@@ -18,6 +18,7 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const authToken = localStorage.getItem("__authToken") || null
+    console.log("token", authToken)
     if (authToken) {
       setIsLoggedIn(true)
       setToken(authToken)
